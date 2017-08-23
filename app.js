@@ -62,9 +62,9 @@ weatherApp.component("weatherCitySearch", {
    templateUrl: "directives/weathersearch.html",
    replace: true,
    bindings: {
-       weatherDay: "<",
-       convertToStandard: "&",
-       convertToDate: "&",
-       dateFormat: "@"
+       weatherDay: '=',
+       convertToStandard: '&',
+       convertToDate: '&',
+       dateFormat: '@'
    }
 });
