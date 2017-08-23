@@ -1,0 +1,12 @@
+{
+  "name": "weatherapp",
+  "version": "1.0.0",
+  "description": "test weather app",
+  "main": "app.js",
+  "scripts": {
+    "test": "test",
+    "start": "http-server"
+  },
+  "author": "",
+  "license": "ISC"
+}
