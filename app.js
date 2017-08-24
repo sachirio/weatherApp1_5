@@ -1,5 +1,5 @@
 //MODULE
-var weatherApp = angular.module('weatherApp', [require('angular-route', 'ngResource')]);
+var weatherApp = angular.module('weatherApp', ['ngRoute', 'ngResource']);
 
 //ROUTES
 weatherApp.config(function ($routeProvider) {
@@ -29,14 +29,14 @@ weatherApp.service('cityService', ['$http', function($http) {
     }*/
 }]);
 //CONTROLLERS
-export class mainController implements function($scope, cityService) {
-    $scope.city = cityService.city;
-    $scope.$watch('city', function() {
+weatherApp.controller('mainController', ['$scope', 'cityService', function($scope, cityService) {
+   $scope.city = cityService.city;
+   $scope.$watch('city', function() {
        cityService.city = $scope.city;
-    });
+   });
 
-};
-export class forecastController implements function($scope, $resource, $routeParams, cityService) {
+}]);
+weatherApp.controller('forecastController', ['$scope', '$resource', '$routeParams', 'cityService', function($scope, $resource, $routeParams, cityService) {
     $scope.city = cityService.city;
 
     $scope.days = $routeParams.days || '2';
@@ -44,27 +44,31 @@ export class forecastController implements function($scope, $resource, $routePar
     $scope.weatherAPI = $resource("http://api.openweathermap.org/data/2.5/forecast/daily?APPID=2db4f864ab87744243c3bb775739460d", { callback: "JSON_CALLBACK" }, { get: { method: "JSONP" }});
 
     $scope.weatherResult = $scope.weatherAPI.get({ q: $scope.city, cnt: $scope.days });
-    $scope.convertToFahrenheit = function(degK) {
-        return Math.round((1.8 * (degK - 273)) + 32);
-    }
 
-    $scope.convertToDate = function(dt) {
-        return new Date(dt * 1000);
-    };
-
-};
+}]);
 
 // API for openweathermap:  http://api.openweathermap.org/data/2.5/forecast/daily?APPID=2db4f864ab87744243c3bb775739460d
 
+export class WeatherResultCompontent {
+    constructor() {
+        console.log(this);
+        this.dateFormat = 'MMM d, y';
+    }
+    convertToFahrenheit(degK) {
+        return Math.round((1.8 * (degK - 273)) + 32);
+    }
+
+    convertToDate(dt) {
+        return new Date(dt * 1000);
+    }
+
+}
+
 //CUSTOM DIRECTIVES FOR TEMPLATES
 weatherApp.component("weatherCitySearch", {
-   restrict: 'E',
-   templateUrl: "directives/weathersearch.html",
-   replace: true,
-   bindings: {
-       weatherDay: '<',
-       convertToStandard: '&',
-       convertToDate: '&',
-       dateFormat: '@'
-   }
+    controller: WeatherResultComponent,
+    templateUrl: "directives/weathersearch.html",
+    bindings: {
+       weatherDay: '<'
+    }
 });
