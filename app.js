@@ -49,7 +49,7 @@ weatherApp.controller('forecastController', ['$scope', '$resource', '$routeParam
 
 // API for openweathermap:  http://api.openweathermap.org/data/2.5/forecast/daily?APPID=2db4f864ab87744243c3bb775739460d
 
-export class WeatherResultCompontent {
+export class WeatherResultComponent {
     constructor() {
         console.log(this);
         this.dateFormat = 'MMM d, y';
