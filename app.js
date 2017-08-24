@@ -1,5 +1,5 @@
 //MODULE
-var weatherApp = angular.module('weatherApp', ['ngRoute', 'ngResource']);
+var weatherApp = angular.module('weatherApp', [require('angular-route', 'ngResource')]);
 
 //ROUTES
 weatherApp.config(function ($routeProvider) {
@@ -29,14 +29,14 @@ weatherApp.service('cityService', ['$http', function($http) {
     }*/
 }]);
 //CONTROLLERS
-weatherApp.controller('mainController', ['$scope', 'cityService', function($scope, cityService) {
-   $scope.city = cityService.city;
-   $scope.$watch('city', function() {
+export class mainController implements function($scope, cityService) {
+    $scope.city = cityService.city;
+    $scope.$watch('city', function() {
        cityService.city = $scope.city;
-   });
+    });
 
-}]);
-weatherApp.controller('forecastController', ['$scope', '$resource', '$routeParams', 'cityService', function($scope, $resource, $routeParams, cityService) {
+};
+export class forecastController implements function($scope, $resource, $routeParams, cityService) {
     $scope.city = cityService.city;
 
     $scope.days = $routeParams.days || '2';
@@ -52,7 +52,7 @@ weatherApp.controller('forecastController', ['$scope', '$resource', '$routeParam
         return new Date(dt * 1000);
     };
 
-}]);
+};
 
 // API for openweathermap:  http://api.openweathermap.org/data/2.5/forecast/daily?APPID=2db4f864ab87744243c3bb775739460d
 
@@ -62,7 +62,7 @@ weatherApp.component("weatherCitySearch", {
    templateUrl: "directives/weathersearch.html",
    replace: true,
    bindings: {
-       weatherDay: '=',
+       weatherDay: '<',
        convertToStandard: '&',
        convertToDate: '&',
        dateFormat: '@'
